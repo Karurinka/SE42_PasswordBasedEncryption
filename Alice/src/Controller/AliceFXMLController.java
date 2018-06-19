@@ -1,14 +1,16 @@
 package Controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
 
 import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.security.auth.DestroyFailedException;
-import javax.swing.*;
-import java.awt.*;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -19,16 +21,16 @@ import java.util.Arrays;
 public class AliceFXMLController
 {
     @FXML
-    JPasswordField passwordField;
+    PasswordField passwordField;
 
     @FXML
-    TextArea messageField;
+    javafx.scene.control.TextArea messageField;
 
     @FXML
-    Button btnEncrypt;
+    javafx.scene.control.Button btnEncrypt;
 
     @FXML
-    Button btnDecrypt;
+    javafx.scene.control.Button btnDecrypt;
 
     private char[] passwordChars;
     private byte[] messageChars;
@@ -183,24 +185,45 @@ public class AliceFXMLController
 
     public AliceFXMLController()
     {
-
+        passwordField = new PasswordField();
+        messageField = new javafx.scene.control.TextArea();
     }
 
     @FXML
     public void encryptClicked()
     {
-        passwordField = new JPasswordField();
-        messageField = new TextArea();
-
-        passwordChars = passwordField.getPassword();
+        passwordChars = passwordField.getText().toCharArray();
         messageChars = messageField.getText().getBytes();
 
-        encrypt(messageChars, passwordChars);
+        try (FileOutputStream fos = new FileOutputStream ("encrypted"))
+        {
+            fos.write(encrypt(messageChars, passwordChars));
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        messageField.setText(" ");
     }
 
     @FXML
     public void decryptClicked()
     {
+         passwordChars = passwordField.getText().toCharArray();
 
+        try
+        {
+            byte[] encryptedMessage = Files.readAllBytes(Paths.get("encrypted"));
+//            System.out.println("Encrypted message: " + encryptedMessage);
+
+            String message = new String(decrypt(encryptedMessage, passwordChars));
+            //System.out.println("Decrypted message: " + message);
+            messageField.setText(message);
+
+
+        } catch (IOException | BadPaddingException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
