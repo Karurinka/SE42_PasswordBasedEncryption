@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AliceFXMLController">
+   <children>
+      <Label fx:id="lblPassword" layoutX="87.0" layoutY="64.0" text="Password" />
+      <PasswordField fx:id="tbPassword" layoutX="151.0" layoutY="60.0" prefHeight="25.0" prefWidth="200.0" />
+      <Label fx:id="lblMessage" layoutX="87.0" layoutY="107.0" text="Message" />
+      <TextArea fx:id="tbMessage" layoutX="151.0" layoutY="107.0" prefHeight="94.0" prefWidth="200.0" />
+      <Button fx:id="btnEncrypt" layoutX="151.0" layoutY="230.0" mnemonicParsing="false" onAction="#encryptClicked" prefHeight="25.0" prefWidth="78.0" text="Encrypt" />
+      <Button fx:id="btnDecrypt" layoutX="274.0" layoutY="230.0" mnemonicParsing="false" onAction="#decryptClicked" prefHeight="25.0" prefWidth="78.0" text="Decrypt" />
+   </children>
+</AnchorPane>
